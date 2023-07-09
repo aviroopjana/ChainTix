@@ -7,7 +7,7 @@ const SYMBOL = "CT"
 const OCCASION_NAME = "ETH Denver"
 const OCCASION_COST = ethers.utils.parseUnits('1','ether')
 const OCCATION_MAX_TICKETS = 100
-const OCCASION_DATE = "27 April"; 
+const OCCASION_DATE = "27 April"
 const OCCASION_TIME = "10.00 AM CST"
 const OCCASION_LOCATION = "Austin, Texas"
 
@@ -48,10 +48,37 @@ describe("ChainTix",() => {
         })
     });
 
-    describe("Occasion",() =>{
+    describe("Occasion",() => {
         it("should update occasion count", async()=> {
             const totalOccasions = await chainTix.totalOccasions();
             expect(totalOccasions).to.be.equal(1);
         })
+
+        it("should return the attributes of occasion", async () => {
+            const occasion = await chainTix.getOccasion(1);
+            expect(occasion.id).to.be.equal(1);
+            expect(occasion.name).to.be.equal(OCCASION_NAME);
+            expect(occasion.cost.toString()).to.be.equal(OCCASION_COST.toString());
+            expect(occasion.maxTicket.toString()).to.be.equal(OCCATION_MAX_TICKETS.toString());
+            expect(occasion.date).to.be.equal(OCCASION_DATE);
+            expect(occasion.time).to.be.equal(OCCASION_TIME);
+            expect(occasion.location).to.be.equal(OCCASION_LOCATION);
+          });         
+    })
+
+    describe("Minting", () => {
+        const ID = 1
+        const SEAT = 50
+        const AMOUNT = ethers.utils.parseUnits('1','ether');
+
+        beforeEach(async() => {
+            const transaction = await chainTix.connect(buyer).mint(ID, SEAT, { value: AMOUNT });
+            await transaction.wait();
+        })
+
+        it("",() => {
+            // TODO : write test cases for mint and transfer functions
+        })
+
     })
 });
